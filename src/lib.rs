@@ -82,6 +82,7 @@ use fxhash::*;
 use ref_cast::*;
 use smallvec::*;
 use std::any::*;
+use std::borrow::Cow;
 use std::fmt::Display;
 use std::marker::*;
 use std::sync::*;
@@ -440,7 +441,7 @@ impl ExternType {
 #[derive(Clone, Debug)]
 pub struct ExportType<'module> {
     /// The name by which the export is known.
-    pub name: &'module str,
+    pub name: Cow<'module,str>,
     /// The type of the exported item.
     pub ty: ExternType,
 }
@@ -453,9 +454,9 @@ pub struct ExportType<'module> {
 #[derive(Clone, Debug)]
 pub struct ImportType<'module> {
     /// The module import name.
-    pub module: &'module str,
+    pub module: Cow<'module,str>,
     /// The name of the imported item.
-    pub name: &'module str,
+    pub name: Cow<'module,str>,
     /// The external item type.
     pub ty: ExternType,
 }

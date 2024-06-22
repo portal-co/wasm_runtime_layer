@@ -391,7 +391,7 @@ impl WasmModule<Engine> for Module {
 
     fn exports(&self) -> Box<dyn '_ + Iterator<Item = ExportType<'_>>> {
         Box::new(self.as_ref().exports().map(|x| ExportType {
-            name: x.name(),
+            name: std::borrow::Cow::Borrowed(x.name()),
             ty: extern_type_from(x.ty().clone()),
         }))
     }
@@ -402,8 +402,8 @@ impl WasmModule<Engine> for Module {
 
     fn imports(&self) -> Box<dyn '_ + Iterator<Item = ImportType<'_>>> {
         Box::new(self.as_ref().imports().map(|x| ImportType {
-            module: x.module(),
-            name: x.name(),
+            module: std::borrow::Cow::Borrowed(x.module()),
+            name: std::borrow::Cow::Borrowed(x.name()),
             ty: extern_type_from(x.ty().clone()),
         }))
     }

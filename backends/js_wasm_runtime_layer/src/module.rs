@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{borrow::Cow, sync::Arc};
 
 use anyhow::Context;
 use fxhash::FxHashMap;
@@ -55,7 +55,7 @@ impl WasmModule<Engine> for Module {
 
     fn exports(&self) -> Box<dyn '_ + Iterator<Item = ExportType<'_>>> {
         Box::new(self.parsed.exports.iter().map(|(name, ty)| ExportType {
-            name: name.as_str(),
+            name: Cow::Borrowed(name.as_str()),
             ty: ty.clone(),
         }))
     }
@@ -70,8 +70,8 @@ impl WasmModule<Engine> for Module {
                 .imports
                 .iter()
                 .map(|((module, name), kind)| ImportType {
-                    module,
-                    name,
+                    module: Cow::Borrowed(&module),
+                    name: Cow::Borrowed(&name),
                     ty: kind.clone(),
                 }),
         )
